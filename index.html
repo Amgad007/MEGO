@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+        .name {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Cursive', sans-serif;
+            font-size: 2.5em;
+            color: #000;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #4A90E2;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4A90E2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="name">𝓐𝓜𝓖𝓐𝓓🖤</div>
+
+    <h1>Student Data Registration</h1>
+    <form id="studentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        
+        <label for="id">Student ID:</label>
+        <input type="text" id="id" name="id" placeholder="Enter your student ID" required>
+
+        <label for="schedule">Schedule (From - To):</label>
+        <input type="text" id="schedule" name="schedule" placeholder="e.g., 8:00 AM - 2:00 PM" required>
+
+        <button type="submit">Generate QR Code</button>
+    </form>
+    <h2>Your QR Code:</h2>
+    <canvas id="qrcode"></canvas>
+    <div class="footer">© 2024 - Your Website</div>
+
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        const form = document.getElementById('studentForm');
+        const qrCanvas = document.getElementById('qrcode');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent page reload
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const schedule = document.getElementById('schedule').value.trim();
+
+            if (name && id && schedule) {
+                qrCanvas.innerHTML = ""; // Clear previous QR code
+                // Create JSON object
+                const qrData = JSON.stringify({
+                    name: name,
+                    studentId: id,
+                    schedule: schedule
+                });
+                // Generate QR code using JSON data
+                QRCode.toCanvas(qrCanvas, qrData, { width: 200 }, (error) => {
+                    if (error) {
+                        console.error(error);
+                        alert("An error occurred while generating the QR code.");
+                    }
+                });
+            } else {
+                alert("Please fill in all the fields.");
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code and PDF Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .name {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Cursive', sans-serif;
+            font-size: 2.5em;
+            color: #000;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            color: #4A90E2;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+
+        pre {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            width: 80%;
+            overflow-x: auto;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .loading {
+            display: none;
+            font-size: 18px;
+            color: #4A90E2;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="name">𝓐𝓜𝓖𝓐𝓓🖤</div>
+
+    <h1>QR Code and PDF Reader</h1>
+    <input type="file" id="qrInput" accept="image/*,application/pdf" multiple>
+    <button onclick="generateExcel()">Generate Excel File</button>
+    <h2>Decoded Data:</h2>
+    <pre id="output">No data to display yet...</pre>
+    <div id="errorMessage" class="error-message"></div>
+    <div class="footer">© 2024 - Your Website</div>
+    <div class="loading" id="loadingMessage">Processing your QR Codes...</div>
+
+    <script>
+        let studentData = [];
+        const outputElement = document.getElementById('output');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        document.getElementById('qrInput').addEventListener('change', function(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                loadingMessage.style.display = 'block';
+                studentData = [];
+                outputElement.textContent = 'Processing...';
+                errorMessage.textContent = '';
+            }
+
+            Array.from(files).forEach(file => {
+                if (file.type === 'application/pdf') {
+                    // Handle PDF files
+                    readPDF(file);
+                } else if (file.type.startsWith('image/')) {
+                    // Handle image files (for QR Code)
+                    processImage(file);
+                }
+            });
+
+            setTimeout(() => {
+                loadingMessage.style.display = 'none';
+                if (studentData.length > 0) {
+                    outputElement.textContent = JSON.stringify(studentData, null, 2);
+                } else {
+                    outputElement.textContent = 'No valid QR data found.';
+                }
+            }, 2000);
+        });
+
+        function readPDF(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const pdfData = new Uint8Array(event.target.result);
+                pdfjsLib.getDocument(pdfData).promise.then(pdf => {
+                    const numPages = pdf.numPages;
+                    let pagePromises = [];
+                    for (let i = 1; i <= numPages; i++) {
+                        pagePromises.push(pdf.getPage(i).then(page => {
+                            return page.getTextContent().then(textContent => {
+                                const text = textContent.items.map(item => item.str).join(' ');
+                                console.log(text); // Optionally display or process text
+                                extractQRCodeFromPage(page);
+                            });
+                        }));
+                    }
+                    Promise.all(pagePromises).then(() => {
+                        console.log('All pages processed.');
+                    });
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function extractQRCodeFromPage(page) {
+            // You can use the page's image to attempt extracting QR codes
+            // For simplicity, we will just simulate this part
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const viewport = page.getViewport({ scale: 1.5 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, canvas.width, canvas.height);
+                if (code) {
+                    try {
+                        const data = JSON.parse(code.data);
+                        studentData.push(data);
+                    } catch (e) {
+                        console.error("Error parsing QR data:", e);
+                    }
+                } else {
+                    console.log("No QR code found in this page.");
+                }
+            });
+        }
+
+        function processImage(file) {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                context.drawImage(img, 0, 0);
+
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+                if (code) {
+                    try {
+                        const data = JSON.parse(code.data);
+                        studentData.push(data);
+                    } catch (e) {
+                        console.error("Error parsing QR data:", e);
+                        errorMessage.textContent = "Error parsing QR data. Please ensure the QR code contains valid data.";
+                    }
+                } else {
+                    console.log("No QR code found.");
+                    errorMessage.textContent = "No valid QR code found in the image. Please try uploading a clearer image or one with a readable QR code.";
+                }
+            };
+        }
+
+        function generateExcel() {
+            if (studentData.length > 0) {
+                const ws = XLSX.utils.json_to_sheet(studentData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Student Data");
+
+                XLSX.writeFile(wb, "students_data.xlsx");
+            } else {
+                alert("No data to export.");
+            }
+        }
+    </script>
+</body>
+</html> -->
