@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Registration</title>
+<style>
+body {
+    font-family: "Agu Display", serif;
+    background-image: url("https://marketplace.canva.com/EAGFfNA0FhU/1/0/1131w/canva-blue-geometric-background-poster-zAUnN1NLViw.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.Logo1 {
+    position: absolute;
+    top: -105px;
+    left: 20px; /* Move the first logo to the left */
+    width: 200px;
+    max-width: 100%;
+}
+
+.Logo2 {
+    position: absolute;
+    top: 18px;
+    right: 20px; /* Move the second logo to the right */
+    width: 200px;
+    max-width: 90%;
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: #aa841e;
+    border-style: groove;
+    border-radius: 10px;
+    font-style: italic;
+    padding: 10px;
+    margin-top: 120px;
+    z-index: 1;
+    position: relative;
+}
+
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+    margin: 100px auto;
+    background-image: url("https://img.freepik.com/free-vector/grunge-watercolor-background-using-pastel-colours_1048-6530.jpg");
+    background-size: cover;
+    text-align: center;
+    position: relative;
+    z-index: 0;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid gold;
+    border-radius: 7px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4A90E2;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #357ABD;
+}
+
+#qrcode {
+    max-width: 100%;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+}
+
+/* Adjustments for smaller screens */
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .Logo1, .Logo2 {
+        width: 150px;  /* Reduce logo size for smaller screens */
+    }
+
+    h1 {
+        font-size: 1.5rem;  /* Reduce font size of the title */
+        margin-top: 160px;  /* Increase margin to avoid overlap */
+    }
+
+    form {
+        width: 95%;
+        padding: 15px;
+    }
+
+    button {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .Logo1 {
+        position: absolute;
+        top: -65px;  /* رفع اللوجو الأول فوق شويه */
+        left: 10px; /* Move it to the left */
+        width: 120px; /* Adjust logo size */
+    }
+
+    .Logo2 {
+        position: absolute;
+        top: 10px;  /* نفس مستوى اللوجو الأول */
+        right: 10px; /* Move it to the right */
+        width: 120px; /* Adjust logo size */
+    }
+
+    h1 {
+        font-size: 1.2rem; /* Adjust title font size */
+        margin-top: 120px; /* Ensure title doesn't overlap with logos */
+        line-height: 1.5; /* Adjust line height for better spacing */
+        text-align: center; /* Align title in the center */
+    }
+
+    form {
+        width: 90%;
+        padding: 10px;
+        margin: 50px auto;
+    }
+
+    input, button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .footer {
+        font-size: 0.8rem;
+    }
+}
+
+
+
+</style>
+</head>
+<body>
+    <img src="Logo1.png" alt="Logo" class="Logo1">
+    <img src="Logo2.png" alt="Logo" class="Logo2">
+
+    <h1>Student Data Registration</h1>
+    <form id="studentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        
+        <label for="id">Student ID:</label>
+        <input type="text" id="id" name="id" placeholder="Enter your student ID" required>
+
+        <label for="schedule">Schedule (From - To):</label>
+        <input type="text" id="schedule" name="schedule" placeholder="e.g., 8:00 AM - 2:00 PM" required>
+
+        <button type="submit">Generate QR Code</button>
+    </form>
+    <h2>Your QR Code:</h2>
+    <canvas id="qrcode"></canvas>
+    <div class="footer">Developed By
+        <a target="_blank" href="https://www.facebook.com/profile.php?id=100027952532592&mibextid=ZbWKwL"> 𝓐𝓜𝓖𝓐𝓓🖤</a>
+        <a target="_blank" href="https://www.facebook.com/profile.php?id=100011880684434&mibextid=ZbWKwL"> 𝒪𝒮𝒜ℳ𝒜🤍</a>
+        All Copy Rights Reserved @2024</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        const form = document.getElementById('studentForm');
+        const qrCanvas = document.getElementById('qrcode');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent page reload
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const schedule = document.getElementById('schedule').value.trim();
+
+            if (name && id && schedule) {
+                const qrData = `Name: ${name}\nID: ${id}\nSchedule: ${schedule}`;
+                QRCode.toCanvas(qrCanvas, qrData, { errorCorrectionLevel: 'H' }, (error) => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        console.log("QR Code generated!");
+                    }
+                });
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
+</body>
+</html>
